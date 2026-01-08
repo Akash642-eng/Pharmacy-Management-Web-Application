@@ -37,6 +37,7 @@ Each module represents a real business domain such as authentication, products, 
 
 # 📂 Project Structure
 
+```text
 maruti-pharmacy/
 │
 ├── app/
