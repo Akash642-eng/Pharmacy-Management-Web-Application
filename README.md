@@ -31,9 +31,6 @@ The focus is on building a backend system that goes beyond basic CRUD operations
 - **Design Principle**: Domain-driven separation  
 - **Pattern Used**: Application Factory Pattern  
 
-Each module represents a real business domain such as authentication, products, orders, and payments.  
-This structure improves maintainability, scalability, and testability.
-
 ---
 
 ## 📂 Project Structure
@@ -113,41 +110,48 @@ maruti-pharmacy/
 
 ## 🚀 How to Run the Project
 **Step 1: Clone the repository**
-
+```
   git clone https://github.com/your-username/maruti-pharmacy.git
   cd maruti-pharmacy
+```
 
 **Step 2: Create and activate virtual environment**
-
+```
   python -m venv venv
   venv\Scripts\activate
+```
 
 **Step 3: Install dependencies**
-
+```
   pip install -r requirements.txt
+```
 
 ## 🔧 Environment Setup
 
 **Create a .env file in the root directory**
-
-FLASK_APP=run.py
-FLASK_ENV=development
-SECRET_KEY=your-secret-key
-DATABASE_URL=sqlite:///maruti.db
+```
+  FLASK_APP=run.py
+  FLASK_ENV=development
+  SECRET_KEY=your-secret-key
+  DATABASE_URL=sqlite:///maruti.db
+```
 
 **🗄 Database Initialization**
-
-flask db init
-flask db migrate -m "Initial migration"
-flask db upgrade
+```
+  flask db init
+  flask db migrate -m "Initial migration"
+  flask db upgrade
+```
 
 ## ▶️ Run the Application
-
+```
 - flask run
+```
 
 **Application runs at**
-
+```
 - http://127.0.0.1:5000
+```
 
 ## 📄 License
 
