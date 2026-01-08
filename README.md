@@ -72,32 +72,23 @@ maruti-pharmacy/
 
 # 🧩 Module Responsibilities
 
-- **Auth Module**
-Handles user login, logout, and session management with secure password hashing.
+- **Auth Module** - Handles user login, logout, and session management with secure password hashing.
 
-- **Admin Module**
-Contains admin-only routes and restricted operations.
+- **Admin Module** - Contains admin-only routes and restricted operations.
 
-- **Products Module**
-Manages pharmacy products and inventory data.
+- **Products Module** - Manages pharmacy products and inventory data.
 
-- **Cart Module**
-Handles temporary cart operations before order placement.
+- **Cart Module** - Handles temporary cart operations before order placement.
 
-- **Orders Module**
-Manages order creation, storage, and status tracking.
+- **Orders Module** - Manages order creation, storage, and status tracking.
 
-- **Payments Module**
-Abstracts payment processing logic for future integrations.
+- **Payments Module** - Abstracts payment processing logic for future integrations.
 
-- **Gateway Module**
-Acts as a boundary for external services and APIs.
+- **Gateway Module** - Acts as a boundary for external services and APIs.
 
-- **Notifications Module**
-Handles system notifications such as order confirmations.
+- **Notifications Module** - Handles system notifications such as order confirmations.
 
-- **Main Module**
-Contains public and landing page routes.
+- **Main Module** - Contains public and landing page routes.
 
 
 ## 🛠 Technologies Used
