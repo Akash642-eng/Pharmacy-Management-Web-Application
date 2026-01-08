@@ -57,7 +57,7 @@ maruti-pharmacy/
 │   │
 │   ├── __init__.py       # Application factory
 │   ├── config.py         # Centralized configuration
-│   └── extensions.py    # Flask extensions initialization
+│   └── extensions.py     # Flask extensions initialization
 │
 ├── instance/
 │   └── maruti.db         # SQLite database (instance-specific)
