@@ -38,7 +38,7 @@ This structure improves maintainability, scalability, and testability.
 
 ## 📂 Project Structure
 
-``
+```
 maruti-pharmacy/
 │
 ├── app/
@@ -68,7 +68,7 @@ maruti-pharmacy/
 ├── .env                  # Environment variables (ignored)
 ├── requirements.txt      # Python dependencies
 └── run.py                # Application entry point
-
+```
 
 # 🧩 Module Responsibilities
 
