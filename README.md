@@ -1,43 +1,44 @@
 # 🏥 Maruti Pharmacy Management System
 
-A modern, modular **Flask-based web application** built to manage pharmacy operations efficiently.  
-This project focuses on **clean backend architecture**, **domain separation**, and **production-ready design practices**.
+A modern, modular **Flask-based web application** designed to manage pharmacy operations efficiently.  
+The project emphasizes **clean backend architecture**, **domain-driven separation**, and **production-ready design practices** aligned with real-world engineering standards.
 
 ---
 
-# 📌 Project Overview
+## 📌 Project Overview
 
-Pharmacy systems require accuracy, security, and scalability.  
-This project implements a **pharmacy management platform** that handles authentication, product management, cart workflows, order processing, and payment abstraction using a well-structured Flask architecture.
+Pharmacy systems demand accuracy, security, and scalability.  
+This application implements a **pharmacy management platform** that handles authentication, product management, cart workflows, order processing, and payment abstraction using a well-structured Flask architecture.
 
-The application is designed to reflect **real-world backend engineering standards**, not just a basic CRUD setup.
-
----
-
-# 🎯 Objectives
-
-- Design a scalable Flask backend using Blueprints
-- Implement secure user authentication
-- Manage products, carts, and orders cleanly
-- Abstract payment and notification logic
-- Follow clean architecture and separation of concerns
-- Build a GitHub-ready, production-style project
+The focus is on building a backend system that goes beyond basic CRUD operations and reflects professional backend development practices.
 
 ---
 
-# 🧠 Application Architecture
+## 🎯 Project Objectives
 
-- **Architecture Style**: Modular Flask (Blueprint-based)
-- **Design Principle**: Domain-driven separation
-- **Application Pattern**: Application Factory Pattern
-
-Each module represents a real business domain such as authentication, products, orders, and payments.
+- Design a scalable Flask backend using Blueprints  
+- Implement secure user authentication and session handling  
+- Manage products, carts, and orders with clear separation of concerns  
+- Abstract payment and notification logic for future integrations  
+- Follow clean architecture and domain-driven design principles  
+- Deliver a GitHub-ready, portfolio-quality project  
 
 ---
 
-# 📂 Project Structure
+## 🧠 Application Architecture
 
-```text
+- **Architecture Style**: Modular Flask (Blueprint-based)  
+- **Design Principle**: Domain-driven separation  
+- **Pattern Used**: Application Factory Pattern  
+
+Each module represents a real business domain such as authentication, products, orders, and payments.  
+This structure improves maintainability, scalability, and testability.
+
+---
+
+## 📂 Project Structure
+
+``
 maruti-pharmacy/
 │
 ├── app/
@@ -59,16 +60,15 @@ maruti-pharmacy/
 │   └── extensions.py    # Flask extensions initialization
 │
 ├── instance/
-│   └── maruti.db         # SQLite database
+│   └── maruti.db         # SQLite database (instance-specific)
 │
 ├── migrations/           # Database migrations
 │
-├── venv/                 # Virtual environment
-├── .env                  # Environment variables
+├── venv/                 # Virtual environment (ignored in Git)
+├── .env                  # Environment variables (ignored)
 ├── requirements.txt      # Python dependencies
 └── run.py                # Application entry point
 
----
 
 # 🧩 Module Responsibilities
 
