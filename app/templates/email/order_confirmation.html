@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation #{{ order_id }} - Maruti Pharmacy</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background-color: #f7fafc;
+            font-size: 15px;
+        }
+        
+        .email-wrapper {
+            max-width: 620px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .header {
+            background-color: #2f855a;
+            padding: 35px 30px;
+            text-align: center;
+        }
+        
+        .logo-text {
+            font-size: 26px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+        
+        .pharmacy-subtitle {
+            color: #c6f6d5;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .content {
+            padding: 45px 35px;
+        }
+        
+        .personal-greeting {
+            font-size: 20px;
+            color: #2f855a;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .greeting-subtitle {
+            font-size: 15px;
+            color: #4a5568;
+            margin-bottom: 32px;
+        }
+        
+        .order-card {
+            background: linear-gradient(135deg, #f0fff4 0%, #f7fef0 100%);
+            border: 2px solid #9ae6b4;
+            border-radius: 12px;
+            padding: 32px;
+            margin: 35px 0;
+        }
+        
+        .order-header {
+            font-size: 22px;
+            color: #22543d;
+            font-weight: 700;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 3px solid #9ae6b4;
+        }
+        
+        .order-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 18px;
+            padding: 12px 0;
+        }
+        
+        .order-row:last-of-type {
+            margin-bottom: 0;
+            padding-top: 20px;
+            padding-bottom: 0;
+            border-top: 2px solid #c6f6d5;
+            font-weight: 700;
+            font-size: 20px;
+        }
+        
+        .row-label {
+            font-size: 15px;
+            color: #718096;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.3px;
+        }
+        
+        .row-value {
+            font-size: 17px;
+            color: #2d3748;
+            font-weight: 600;
+        }
+        
+        .total-amount {
+            color: #2f855a !important;
+            font-size: 22px !important;
+        }
+        
+        .payment-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #c6f6d5;
+            color: #22543d;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 700;
+            margin-top: 16px;
+        }
+        
+        .section-divider {
+            height: 2px;
+            background: linear-gradient(to right, transparent, #e2e8f0, transparent);
+            margin: 40px 0;
+        }
+        
+        .next-steps {
+            background: #fffaf0;
+            border-left: 5px solid #ed8936;
+            padding: 25px 30px;
+            margin: 35px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .next-steps-title {
+            font-size: 18px;
+            color: #c05621;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+        
+        .next-steps-text {
+            color: #744210;
+            font-size: 15px;
+        }
+        
+        .trust-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 20px;
+            margin: 45px 0;
+        }
+        
+        .trust-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 20px 15px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .trust-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        
+        .trust-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 4px;
+        }
+        
+        .trust-subtitle {
+            font-size: 12px;
+            color: #718096;
+        }
+        
+        .support-section {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+            margin: 40px 0;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .support-title {
+            font-size: 19px;
+        }
+        
+        .support-subtitle {
+            color: #4a5568;
+            margin-bottom: 18px;
+        }
+        
+        .support-email {
+            display: inline-block;
+            background: #2f855a;
+            color: #ffffff;
+            padding: 14px 32px;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 16px;
+            box-shadow: 0 4px 12px rgba(47, 133, 90, 0.3);
+        }
+        
+        .closing {
+            text-align: center;
+            color: #718096;
+            font-size: 16px;
+            margin-top: 35px;
+            font-style: italic;
+        }
+        
+        .footer {
+            background-color: #2d3748;
+            color: #e2e8f0;
+            padding: 30px 35px;
+            text-align: center;
+            font-size: 13px;
+        }
+        
+        .footer-brand {
+            font-size: 18px;
+            font-weight: 700;
+            color: #ffffff;
+            margin-bottom: 12px;
+        }
+        
+        .footer-legal {
+            opacity: 0.8;
+            line-height: 1.5;
+        }
+        
+        @media (max-width: 640px) {
+            .content {
+                padding: 35px 25px;
+            }
+            
+            .order-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+            
+            .row-value {
+                align-self: flex-end;
+            }
+            
+            .trust-features {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="email-wrapper">
+        <div class="header">
+            <div class="logo-text">Maruti Pharmacy</div>
+            <div class="pharmacy-subtitle">Trusted Family Pharmacy Since 1995</div>
+        </div>
+        
+        <div class="content">
+            <div class="personal-greeting">Hello {{ user_name }},</div>
+            <div class="greeting-subtitle">
+                Thank you for your order. Your payment has been successfully processed.
+            </div>
+            
+            <div class="order-card">
+                <div class="order-header">Order Confirmation Details</div>
+                
+                <div class="order-row">
+                    <span class="row-label">Order ID</span>
+                    <span class="row-value">#{{ order_id }}</span>
+                </div>
+                
+                <div class="order-row">
+                    <span class="row-label">Date & Time</span>
+                    <span class="row-value">{{ order_date }}</span>
+                </div>
+                
+                <div class="order-row">
+                    <span class="row-label">Total Amount</span>
+                    <span class="row-value total-amount">₹{{ total_amount }}</span>
+                </div>
+                
+                <div class="payment-status">
+                    ✓ Payment Successful
+                </div>
+            </div>
+            
+            <div class="section-divider"></div>
+  
+            <div class="next-steps">
+                <div class="next-steps-title">📦 Next Steps</div>
+                <div class="next-steps-text">
+                    Your order is being processed by our licensed pharmacists. 
+                    Expect delivery within 24-48 hours. SMS updates will be sent.
+                </div>
+            </div>
+            
+            <div class="trust-features">
+                <div class="trust-item">
+                    <div class="trust-icon">💊</div>
+                    <div class="trust-title">Genuine Medicines</div>
+                    <div class="trust-subtitle">Pharmacy checked</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">🔒</div>
+                    <div class="trust-title">Secure Payment</div>
+                    <div class="trust-subtitle">SSL Encrypted</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">📜</div>
+                    <div class="trust-title">Licensed Store</div>
+                    <div class="trust-subtitle">Govt Approved</div>
+                </div>
+                <div class="trust-item">
+                    <div class="trust-icon">🚚</div>
+                    <div class="trust-title">Fast Delivery</div>
+                    <div class="trust-subtitle">Same Day Dispatch</div>
+                </div>
+            </div>
+            
+            <div class="support-section">
+                <div class="support-title">Our Support Team is Here for You</div>
+                <div class="support-subtitle">24/7 Customer Care</div>
+                <a href="mailto:support@marutipharmacy.com" class="support-email">
+                    support@marutipharmacy.com or speedyy6789@gmail.com
+                </a>
+            </div>
+            
+            <div class="closing">
+                Wishing you good health,<br>
+                <strong>Maruti Pharmacy Team</strong>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <div class="footer-brand">© {{ year }} Maruti Pharmacy</div>
+            <div class="footer-legal">
+                GSTIN: 29ABCDE1234F1Z5 | Licensed Pharmacy<br>
+                This is an automated email. Please do not reply directly.
+            </div>
+        </div>
+    </div>
+</body>
+</html>

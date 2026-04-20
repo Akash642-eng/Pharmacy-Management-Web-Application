@@ -1,0 +1,67 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+
+<h2 class="fw-bold mb-4">Customers</h2>
+
+<div class="card shadow-sm border-0">
+  <div class="card-body p-0">
+
+    <table class="table align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Orders</th>
+          <th>Joined</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for user, order_count in customers %}
+        <tr>
+
+          <td>#{{ user.id }}</td>
+
+          <td class="fw-semibold">
+            {{ user.name }}
+          </td>
+
+          <td>
+            {{ user.email }}
+          </td>
+
+          <td>
+            {% if user.role == "admin" %}
+              <span class="badge bg-dark">Admin</span>
+            {% else %}
+              <span class="badge bg-primary">Customer</span>
+            {% endif %}
+          </td>
+
+          <td class="fw-semibold">
+            {{ order_count }}
+          </td>
+
+          <td>
+            {{ user.created_at.strftime("%d %b %Y") }}
+          </td>
+
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="6" class="text-center text-muted py-4">
+            No users found
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}

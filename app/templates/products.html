@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5 pt-4">
+
+  <div class="text-center mb-5 fade-up">
+    <h1 class="fw-bold mb-2">Medicines & Healthcare</h1>
+    <p class="text-muted fs-5">
+      Genuine medicines & healthcare essentials delivered safely
+    </p>
+  </div>
+
+  {% if products %}
+  <div class="row g-4">
+
+    {% for product in products %}
+    <div class="col-xl-3 col-lg-4 col-md-6 fade-up">
+      <div class="card h-100 border-0 product-card">
+
+        <div class="p-3 text-center bg-light rounded-top">
+          <img
+            src="{{ url_for('static', filename=product.image_url) }}"
+            alt="{{ product.name }}"
+            loading="lazy"
+            class="img-fluid"
+            style="height:160px; object-fit:contain; width:100%;"
+          >
+        </div>
+
+        <div class="card-body d-flex flex-column">
+
+          {% if product.category %}
+          <span class="text-muted small mb-1">
+            {{ product.category }}
+          </span>
+          {% endif %}
+
+          <h6 class="fw-semibold mb-1 text-truncate">
+            {{ product.name }}
+          </h6>
+
+          <div class="mb-2">
+            <span class="fw-bold fs-5 text-success">
+              ₹ {{ product.price }}
+            </span>
+          </div>
+
+          {% if product.is_offer %}
+          <span class="badge bg-success mb-2 align-self-start">
+            Special Offer
+          </span>
+          {% endif %}
+
+          <p class="text-muted small flex-grow-1">
+            {{ product.description[:90] }}
+            {% if product.description|length > 90 %}...{% endif %}
+          </p>
+
+          {% if current_user.is_authenticated and not current_user.is_admin %}
+          <form method="POST"
+                action="{{ url_for('cart.add_to_cart', product_id=product.id) }}">
+            <button type="submit" class="btn btn-primary w-100 fw-semibold">
+              🛒 Add to Cart
+            </button>
+          </form>
+          {% endif %}
+
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+
+  </div>
+
+  {% else %}
+  <div class="text-center text-muted py-5">
+    <h5>No products available</h5>
+  </div>
+  {% endif %}
+
+</div>
+{% endblock %}

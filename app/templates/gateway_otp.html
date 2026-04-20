@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>OTP Verification</h3>
+
+<form method="POST" action="{{ url_for('gateway.verify_otp', payment_id=payment.id) }}">
+  <input type="text" name="otp" placeholder="Enter OTP" required>
+  <button class="btn btn-success mt-2">Verify</button>
+</form>
+
+{% endblock %}

@@ -1,0 +1,82 @@
+{% extends "admin/base_admin.html" %}
+
+{% block content %}
+
+<h2 class="fw-bold mb-4">Orders</h2>
+
+<div class="card shadow-sm border-0">
+  <div class="card-body p-0">
+
+    <table class="table align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Date</th>
+          <th>Total</th>
+          <th>Payment</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% for order in orders %}
+        <tr>
+
+          <td class="fw-semibold">#{{ order.id }}</td>
+
+          <td>
+            {{ order.user.name }}
+            <div class="small text-muted">
+              {{ order.user.email }}
+            </div>
+          </td>
+
+          <td>
+            {{ order.created_at.strftime("%d %b %Y") }}
+          </td>
+
+          <td class="fw-bold">
+            ₹ {{ order.total_amount }}
+          </td>
+
+          <td>
+            {% if order.payment_status == "success" %}
+              <span class="badge bg-success">Paid</span>
+            {% elif order.payment_status == "failed" %}
+              <span class="badge bg-danger">Failed</span>
+            {% else %}
+              <span class="badge bg-warning text-dark">Pending</span>
+            {% endif %}
+          </td>
+
+          <td>
+            <span class="badge bg-secondary">
+              {{ order.status }}
+            </span>
+          </td>
+
+          <td>
+            <a href="{{ url_for('admin_panel.order_detail', order_id=order.id) }}"
+               class="btn btn-sm btn-outline-primary">
+              View
+            </a>
+          </td>
+
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="7" class="text-center text-muted py-4">
+            No orders found
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+
+    </table>
+
+  </div>
+</div>
+
+{% endblock %}

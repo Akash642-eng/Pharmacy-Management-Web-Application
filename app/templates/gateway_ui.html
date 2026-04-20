@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h3>Secure Payment Gateway</h3>
+
+<p>Amount: ₹ {{ payment.amount }}</p>
+<p>Method: {{ payment.method|upper }}</p>
+
+<a href="{{ url_for('gateway.gateway_otp', payment_id=payment.id) }}"
+   class="btn btn-success">
+   Pay Securely
+</a>
+
+
+{% endblock %}

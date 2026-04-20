@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Choose Payment Method</h2>
+
+<div class="payment-options">
+
+    <a class="btn btn-primary"
+       href="{{ url_for('payments.start_payment', order_id=order.id, method='card') }}">
+        💳 Pay with Card
+    </a>
+
+    <a class="btn btn-success"
+       href="{{ url_for('payments.start_payment', order_id=order.id, method='upi') }}">
+        📱 Pay with UPI
+    </a>
+
+</div>
+{% endblock %}

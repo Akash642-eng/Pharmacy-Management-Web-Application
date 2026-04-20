@@ -1,0 +1,108 @@
+{% extends "admin/base_admin.html" %}
+{% block content %}
+
+<h2 class="fw-bold mb-4">Order #{{ order.id }}</h2>
+
+<div class="row g-4">
+
+  <div class="col-lg-7">
+
+    <div class="card mb-4 shadow-sm border-0">
+      <div class="card-body">
+        <h5 class="fw-bold mb-3">Customer</h5>
+        <p class="mb-1"><strong>Name:</strong> {{ order.user.name }}</p>
+        <p class="mb-1"><strong>Email:</strong> {{ order.user.email }}</p>
+        <p class="mb-0"><strong>Address:</strong> {{ order.address }}</p>
+      </div>
+    </div>
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+        <h5 class="fw-bold mb-3">Items</h5>
+
+        {% for item in order.items %}
+        <div class="d-flex justify-content-between mb-2">
+          <div>
+            {{ item.product.name }}
+            <div class="small text-muted">Qty: {{ item.quantity }}</div>
+          </div>
+          <strong>₹ {{ item.price * item.quantity }}</strong>
+        </div>
+        {% endfor %}
+
+        <hr>
+        <h5 class="fw-bold text-end">
+          Total: ₹ {{ order.total_amount }}
+        </h5>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="col-lg-5">
+
+    <div class="card shadow-sm border-0">
+      <div class="card-body">
+
+        <h5 class="fw-bold mb-3">Order Status</h5>
+
+        {% set steps = [
+          "pending_payment",
+          "paid",
+          "processing",
+          "shipped",
+          "delivered"
+        ] %}
+
+        {# fix  #}
+        {% set current_status = order.status if order.status in steps else "pending_payment" %}
+
+        {% if order.status in ["cancelled", "failed"] %}
+          <div class="alert alert-danger fw-semibold text-center">
+            Order {{ order.status.replace("_"," ").title() }}
+          </div>
+
+        {% else %}
+          <div class="list-group mb-4">
+            {% for step in steps %}
+              <div class="list-group-item
+                {% if step == current_status %} active {% endif %}
+                {% if steps.index(step) < steps.index(current_status) %} list-group-item-success {% endif %}
+              ">
+                {{ step.replace("_"," ").title() }}
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+        <form method="POST">
+          <label class="form-label">Update Status</label>
+
+          <select name="status" class="form-select mb-3">
+            {% for s in ["pending_payment","paid","processing","shipped","delivered","cancelled","failed"] %}
+              <option value="{{ s }}" {% if order.status == s %}selected{% endif %}>
+                {{ s.replace("_"," ").title() }}
+              </option>
+            {% endfor %}
+          </select>
+
+          <button class="btn btn-dark w-100">
+            Update Status
+          </button>
+        </form>
+
+        <hr>
+
+        <a href="{{ url_for('orders.download_invoice', order_id=order.id) }}"
+           class="btn btn-outline-primary w-100">
+          Download Invoice
+        </a>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}

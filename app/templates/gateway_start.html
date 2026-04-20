@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container mt-5" style="max-width: 520px;">
+
+  <div class="text-center mb-4">
+    <h4 class="fw-bold">Secure Bank Gateway</h4>
+    <p class="text-muted">
+      Transaction ID: {{ payment.id }}<br>
+      Amount: <strong>₹ {{ payment.amount }}</strong>
+    </p>
+  </div>
+
+  <div class="card shadow-sm">
+    <div class="card-body">
+
+      {% if payment.method == "card" %}
+      <!-- CARD PAYMENT -->
+      <h6 class="mb-3">Card Details</h6>
+
+      <form method="POST" action="{{ url_for('gateway.process_gateway', payment_id=payment.id) }}">
+
+        <input type="text" class="form-control mb-3" placeholder="Card Number" required>
+        <div class="row">
+          <div class="col">
+            <input type="text" class="form-control mb-3" placeholder="MM/YY" required>
+          </div>
+          <div class="col">
+            <input type="password" class="form-control mb-3" placeholder="CVV" required>
+          </div>
+        </div>
+        <input type="text" class="form-control mb-3" placeholder="Card Holder Name" required>
+
+        <button class="btn btn-success w-100 py-2">
+          Pay ₹ {{ payment.amount }}
+        </button>
+
+      </form>
+
+      {% elif payment.method == "upi" %}
+      <!-- UPI -->
+      <h6 class="mb-3">UPI Payment</h6>
+
+      <form method="POST" action="{{ url_for('gateway.process_gateway', payment_id=payment.id) }}">
+        <input type="text" class="form-control mb-3" placeholder="UPI ID (example@upi)" required>
+
+        <button class="btn btn-success w-100 py-2">
+          Pay ₹ {{ payment.amount }}
+        </button>
+      </form>
+
+      {% else %}
+      <!-- NET BANKING -->
+      <h6 class="mb-3">Net Banking</h6>
+
+      <form method="POST" action="{{ url_for('gateway.process_gateway', payment_id=payment.id) }}">
+        <select class="form-select mb-3" required>
+          <option>Select Bank</option>
+          <option>SBI</option>
+          <option>HDFC</option>
+          <option>ICICI</option>
+          <option>AXIS</option>
+        </select>
+
+        <button class="btn btn-success w-100 py-2">
+          Continue
+        </button>
+      </form>
+
+      {% endif %}
+
+      <p class="text-center text-muted mt-3" style="font-size: 12px;">
+        🔒 Secured by Maruti Bank Gateway
+      </p>
+
+    </div>
+  </div>
+
+</div>
+
+{% endblock %}
