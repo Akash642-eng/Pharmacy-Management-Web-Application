@@ -1,12 +1,14 @@
+import os
+
 from flask import Flask
 from app.config import Config
 from app.extensions import db, migrate, bcrypt, login_manager
- 
+
 from app.cart import models
 from app.payments import models
 from app.gateway import models
 
-#email
+# Email
 from app.extensions import mail
 
 
@@ -14,19 +16,21 @@ def create_app():
     app = Flask(__name__)
     app.config.from_object(Config)
 
-
-    #email
+    # Email configuration
     app.config.update(
-        MAIL_SERVER = "smtp.gmail.com",
-        MAIL_PORT = 587,
-        MAIL_USE_TLS = True,
-        MAIL_USE_SSL = False,
-        MAIL_USERNAME = "speedyy6789@gmail.com",
-        MAIL_PASSWORD = "znjgohuyvlnjrtzc",
-        MAIL_DEFAULT_SENDER = ("Maruti Pharmacy", "speedyy6789@gmail.com")
+        MAIL_SERVER="smtp.gmail.com",
+        MAIL_PORT=587,
+        MAIL_USE_TLS=True,
+        MAIL_USE_SSL=False,
+        MAIL_USERNAME=os.getenv("MAIL_USERNAME"),
+        MAIL_PASSWORD=os.getenv("MAIL_PASSWORD"),
+        MAIL_DEFAULT_SENDER=(
+            os.getenv("MAIL_DEFAULT_SENDER_NAME", "Maruti Pharmacy"),
+            os.getenv("MAIL_USERNAME")
+        )
     )
 
-
+    # Initialize extensions
     db.init_app(app)
     migrate.init_app(app, db)
     bcrypt.init_app(app)
