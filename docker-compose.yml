@@ -1,0 +1,19 @@
+services:
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: maruti-pharmacy
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_DEFAULT_SENDER_NAME: ${MAIL_DEFAULT_SENDER_NAME}
+      SQLALCHEMY_DATABASE_URI: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@maruti-postgres:5432/${POSTGRES_DB}
+    ports:
+      - "5000:5000"
+
+networks:
+  default:
+    name: maruti-pharmacy_default
