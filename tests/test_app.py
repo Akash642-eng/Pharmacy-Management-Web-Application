@@ -36,3 +36,25 @@ def test_database_is_available(app):
         result = db.session.execute(text("SELECT 1")).scalar()
 
         assert result == 1
+
+
+def test_liveness(client):
+    response = client.get("/health/live")
+
+    assert response.status_code == 200
+
+    data = response.get_json()
+
+    assert data["status"] == "ok"
+    assert data["service"] == "maruti-pharmacy"
+
+
+def test_readiness(client):
+    response = client.get("/health/ready")
+
+    assert response.status_code == 200
+
+    data = response.get_json()
+
+    assert data["status"] == "ready"
+    assert data["database"] == "ok"
