@@ -17,7 +17,10 @@
     <div class="col-xl-3 col-lg-4 col-md-6 fade-up">
       <div class="card h-100 border-0 product-card">
 
+        <!-- Product Image -->
         <div class="p-3 text-center bg-light rounded-top">
+
+          {% if product.image_url %}
           <img
             src="{{ url_for('static', filename=product.image_url) }}"
             alt="{{ product.name }}"
@@ -25,6 +28,15 @@
             class="img-fluid"
             style="height:160px; object-fit:contain; width:100%;"
           >
+          {% else %}
+          <div
+            class="d-flex align-items-center justify-content-center text-muted"
+            style="height:160px;"
+          >
+            <span>No image available</span>
+          </div>
+          {% endif %}
+
         </div>
 
         <div class="card-body d-flex flex-column">
@@ -51,15 +63,26 @@
           </span>
           {% endif %}
 
+          {% if product.description %}
           <p class="text-muted small flex-grow-1">
             {{ product.description[:90] }}
             {% if product.description|length > 90 %}...{% endif %}
           </p>
+          {% else %}
+          <p class="text-muted small flex-grow-1">
+            No description available.
+          </p>
+          {% endif %}
 
           {% if current_user.is_authenticated and not current_user.is_admin %}
-          <form method="POST"
-                action="{{ url_for('cart.add_to_cart', product_id=product.id) }}">
-            <button type="submit" class="btn btn-primary w-100 fw-semibold">
+          <form
+            method="POST"
+            action="{{ url_for('cart.add_to_cart', product_id=product.id) }}"
+          >
+            <button
+              type="submit"
+              class="btn btn-primary w-100 fw-semibold"
+            >
               🛒 Add to Cart
             </button>
           </form>
