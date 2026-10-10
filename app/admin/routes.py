@@ -1,6 +1,6 @@
 ﻿from flask import Blueprint, render_template, request, Response, redirect, url_for, flash
 from flask_login import login_required
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 from sqlalchemy import func
 from werkzeug.utils import secure_filename
 import os
@@ -27,12 +27,16 @@ def dashboard():
 
     total_orders = Order.query.count()
 
-    today_str = date.today().strftime("%Y-%m-%d")
     today_date = date.today()
+    start_of_today = datetime.combine(today_date, datetime.min.time())
+    start_of_tomorrow = datetime.combine(
+        today_date + timedelta(days=1),
+        datetime.min.time(),
+    )
 
     today_orders = Order.query.filter(
-        Order.created_at.isnot(None),
-        func.strftime("%Y-%m-%d", Order.created_at) == today_str
+        Order.created_at >= start_of_today,
+        Order.created_at < start_of_tomorrow,
     ).count()
 
     pending_orders = Order.query.filter(
