@@ -10,6 +10,7 @@ from app.extensions import db
 from app.auth.models import User
 from app.orders.models import Order
 from app.products.models import Product
+from app.storage import StorageError, upload_product_image
 from flask import current_app
 
 admin_bp = Blueprint(
@@ -162,21 +163,12 @@ def add_product():
             flash("Product image is required", "danger")
             return redirect(url_for("admin_panel.add_product"))
 
-        filename = secure_filename(image_file.filename)
-
-        upload_folder = os.path.join(
-            current_app.root_path,
-            "static",
-            "images",
-            "products"
-        )
-
-        os.makedirs(upload_folder, exist_ok=True)
-
-        image_path = os.path.join(upload_folder, filename)
-        image_file.save(image_path)
-
-        image_url = f"images/products/{filename}"
+        try:
+            image_url = upload_product_image(image_file)
+        except StorageError:
+            current_app.logger.exception("Unable to store new product image")
+            flash("Unable to save the product image. Check storage configuration and try again.", "danger")
+            return redirect(url_for("admin_panel.add_product"))
 
         product = Product(
             name=name,
@@ -222,12 +214,12 @@ def edit_product(product_id):
 
         image_file = request.files.get("image")
         if image_file and image_file.filename != "":
-            filename = secure_filename(image_file.filename)
-            upload_folder = os.path.join(current_app.root_path, "static", "images", "products")
-            os.makedirs(upload_folder, exist_ok=True)
-            image_path = os.path.join(upload_folder, filename)
-            image_file.save(image_path)
-            product.image_url = f"images/products/{filename}"
+            try:
+                product.image_url = upload_product_image(image_file)
+            except StorageError:
+                current_app.logger.exception("Unable to update product image")
+                flash("Unable to save the product image. Check storage configuration and try again.", "danger")
+                return redirect(url_for("admin_panel.edit_product", product_id=product.id))
 
         db.session.commit()
         flash("Product updated successfully", "success")

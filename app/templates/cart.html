@@ -33,7 +33,7 @@
 
           <div class="me-3" style="width:90px;">
             <img
-              src="{{ url_for('static', filename=item.product.image_url) }}"
+              src="{{ image_src(item.product.image_url) }}"
               alt="{{ item.product.name }}"
               class="img-fluid rounded"
               style="height:70px; object-fit:contain;">

@@ -1,0 +1,15 @@
+spec:
+  template:
+    spec:
+      containers:
+        - name: maruti-pharmacy
+          envFrom:
+            - configMapRef:
+                name: maruti-pharmacy-config
+            - secretRef:
+                name: maruti-pharmacy-secret
+            - secretRef:
+                name: maruti-pharmacy-storage
+          env:
+            - name: OBJECT_STORAGE_ENABLED
+              value: "true"

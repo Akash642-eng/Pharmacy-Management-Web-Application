@@ -44,3 +44,11 @@ dist/
 
 # Docker
 docker-compose.override.yml
+# Kubernetes local backup exports
+k8s/backup/
+# Kubernetes local/generated files
+k8s/tls/
+k8s-rebuild-backup/
+
+# Local MinIO community source/build artifacts
+minio-community/

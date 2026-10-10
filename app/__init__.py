@@ -5,6 +5,7 @@ from flask import Flask
 from app.config import Config
 from app.extensions import db, migrate, bcrypt, login_manager
 from app.logging_config import configure_logging
+from app.storage import product_image_src
 
 from app.cart import models
 from app.payments import models
@@ -19,6 +20,7 @@ def create_app(test_config=None):
 
     # Base configuration
     app.config.from_object(Config)
+    app.add_template_global(product_image_src, name="image_src")
 
     # Test/override configuration must happen BEFORE extensions initialize.
     if test_config:
@@ -58,6 +60,7 @@ def create_app(test_config=None):
     from app.cart.routes import cart_bp
     from app.gateway.routes import gateway_bp
     from app.health.routes import health_bp
+    from app.media.routes import media_bp
 
     app.register_blueprint(main_bp)
     app.register_blueprint(auth_bp)
@@ -70,5 +73,6 @@ def create_app(test_config=None):
     app.register_blueprint(cart_bp)
     app.register_blueprint(gateway_bp)
     app.register_blueprint(health_bp)
+    app.register_blueprint(media_bp)
 
     return app

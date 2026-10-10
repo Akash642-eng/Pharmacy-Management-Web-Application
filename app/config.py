@@ -12,6 +12,16 @@ class Config:
     )
 
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    MAX_CONTENT_LENGTH = 10 * 1024 * 1024  # 10 MiB
+
+    # S3-compatible object storage (disabled by default for backward compatibility)
+    OBJECT_STORAGE_ENABLED = os.getenv("OBJECT_STORAGE_ENABLED", "false").lower() == "true"
+    S3_ENDPOINT_URL = os.getenv("S3_ENDPOINT_URL", "http://127.0.0.1:9000")
+    S3_ACCESS_KEY = os.getenv("S3_ACCESS_KEY")
+    S3_SECRET_KEY = os.getenv("S3_SECRET_KEY")
+    S3_BUCKET = os.getenv("S3_BUCKET", "maruti-pharmacy-products")
+    S3_REGION = os.getenv("S3_REGION", "us-east-1")
+
 
     # Email configuration
     MAIL_SERVER = os.getenv("MAIL_SERVER", "smtp.gmail.com")
