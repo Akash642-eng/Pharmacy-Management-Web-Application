@@ -1,3 +1,4 @@
+
 import re
 
 import pytest
@@ -294,7 +295,9 @@ def test_customer_can_add_product_to_cart(client):
 
 def test_adding_same_product_increases_quantity(client):
     create_user()
-    product = create_product(stock=10)
+    create_product(stock=10)
+
+    product = Product.query.first()
 
     login(client)
 
@@ -345,10 +348,10 @@ def test_customer_can_checkout_with_cod(client, monkeypatch):
 
     client.post(f"/cart/add/{product.id}")
 
-    # Email is an external side effect and is not part of this checkout test.
+    # Mock the queue so this unit test does not require Redis.
     monkeypatch.setattr(
-        "app.orders.routes.send_order_confirmation_email",
-        lambda order: None,
+        "app.orders.routes.enqueue_order_confirmation",
+        lambda order_id: type("FakeJob", (), {"id": "test-job"})(),
     )
 
     response = client.post(

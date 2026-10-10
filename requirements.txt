@@ -29,3 +29,5 @@ pytest-flask==1.3.0
 boto3==1.43.110
 
 redis==8.1.0
+
+rq==2.12.0

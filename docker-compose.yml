@@ -1,9 +1,11 @@
+
 services:
   app:
     build:
       context: .
       dockerfile: Dockerfile
     container_name: maruti-pharmacy
+    restart: unless-stopped
     environment:
       SECRET_KEY: ${SECRET_KEY}
       MAIL_USERNAME: ${MAIL_USERNAME}
@@ -14,6 +16,41 @@ services:
       REDIS_CACHE_TTL_SECONDS: "60"
     ports:
       - "5000:5000"
+    depends_on:
+      redis:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: maruti-pharmacy-worker
+    restart: unless-stopped
+    command:
+      - python
+      - -c
+      - |
+        from rq import Worker, Queue
+        from redis import Redis
+        from app import create_app
+
+        app = create_app()
+        connection = Redis.from_url(app.config["REDIS_URL"])
+
+        with app.app_context():
+            worker = Worker(
+                [Queue("emails", connection=connection)],
+                connection=connection,
+            )
+            worker.work()
+    environment:
+      SECRET_KEY: ${SECRET_KEY}
+      MAIL_USERNAME: ${MAIL_USERNAME}
+      MAIL_PASSWORD: ${MAIL_PASSWORD}
+      MAIL_DEFAULT_SENDER_NAME: ${MAIL_DEFAULT_SENDER_NAME}
+      SQLALCHEMY_DATABASE_URI: postgresql+psycopg://${POSTGRES_USER}:${POSTGRES_PASSWORD}@maruti-postgres:5432/${POSTGRES_DB}
+      REDIS_URL: redis://redis:6379/0
+      REDIS_CACHE_TTL_SECONDS: "60"
     depends_on:
       redis:
         condition: service_healthy
