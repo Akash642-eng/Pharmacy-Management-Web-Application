@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, request, flash, send_file
 from flask_login import login_required, current_user
-from datetime import datetime, date   # ✅ date added (REQUIRED)
+from datetime import datetime, date   # date added (REQUIRED)
 import random
 import io
 
@@ -8,6 +8,7 @@ from reportlab.lib.pagesizes import A4
 from reportlab.pdfgen import canvas
 from reportlab.lib.colors import HexColor
 
+from app.cache import invalidate_product_catalog
 from app.extensions import db
 from app.orders.models import Order, OrderItem
 from app.cart.models import Cart
@@ -46,7 +47,6 @@ def checkout():
             flash(str(e), "danger")
             return redirect(url_for("cart.view_cart"))
 
-
         order = Order(
             user_id=current_user.id,
             address=address,
@@ -78,7 +78,9 @@ def checkout():
         if payment_success:
             order.payment_status = "success"
             order.status = "processing" if payment_method == "cod" else "paid"
-            order.invoice_number = f"INV-{order.id}-{datetime.utcnow().strftime('%Y%m%d')}"
+            order.invoice_number = (
+                f"INV-{order.id}-{datetime.utcnow().strftime('%Y%m%d')}"
+            )
 
             db.session.delete(cart)
 
@@ -91,6 +93,9 @@ def checkout():
             return redirect(url_for("cart.view_cart"))
 
         db.session.commit()
+
+        # Invalidate the cached product catalogue after a successful checkout.
+        invalidate_product_catalog()
 
         if order.payment_status == "success":
             try:
@@ -120,6 +125,7 @@ def my_orders():
     )
     return render_template("orders.html", orders=orders)
 
+
 @orders_bp.route("/order/success/<int:order_id>")
 @login_required
 @customer_required
@@ -131,6 +137,7 @@ def order_success(order_id):
 
     return render_template("order_success.html", order=order)
 
+
 @orders_bp.route("/order/failed/<int:order_id>")
 @login_required
 @customer_required
@@ -141,6 +148,7 @@ def order_failed(order_id):
         return redirect(url_for("main.home"))
 
     return render_template("order_failed.html", order=order)
+
 
 @orders_bp.route("/order/<int:order_id>/invoice")
 @login_required

@@ -1,10 +1,11 @@
-from flask import Blueprint, render_template, request, Response, redirect, url_for, flash
+﻿from flask import Blueprint, render_template, request, Response, redirect, url_for, flash
 from flask_login import login_required
 from datetime import date, datetime
 from sqlalchemy import func
 from werkzeug.utils import secure_filename
 import os
 
+from app.cache import invalidate_product_catalog
 from app.admin.utils import admin_required
 from app.extensions import db
 from app.auth.models import User
@@ -183,6 +184,7 @@ def add_product():
         db.session.add(product)
         db.session.commit()
 
+        invalidate_product_catalog()
         flash("Product added successfully", "success")
         return redirect(url_for("admin_panel.products"))
 
@@ -222,6 +224,8 @@ def edit_product(product_id):
                 return redirect(url_for("admin_panel.edit_product", product_id=product.id))
 
         db.session.commit()
+
+        invalidate_product_catalog()
         flash("Product updated successfully", "success")
         return redirect(url_for("admin_panel.products"))
 
@@ -362,6 +366,7 @@ def toggle_product_status(product_id):
     product.is_active = not product.is_active
     db.session.commit()
 
+    invalidate_product_catalog()
     status = "activated" if product.is_active else "deactivated"
     flash(f"Product {status} successfully", "success")
 
@@ -378,6 +383,7 @@ def toggle_product_offer(product_id):
     product.is_offer = not product.is_offer
     db.session.commit()
 
+    invalidate_product_catalog()
     status = "marked as offer" if product.is_offer else "removed from offers"
     flash(f"Product {status}", "success")
 
@@ -393,6 +399,7 @@ def toggle_product(product_id):
     product.is_active = not product.is_active
     db.session.commit()
 
+    invalidate_product_catalog()
     flash(
         f"Product {'enabled' if product.is_active else 'disabled'} successfully",
         "success"

@@ -1,6 +1,7 @@
 import os
 
 from flask import Flask
+from redis import Redis
 
 from app.config import Config
 from app.extensions import db, migrate, bcrypt, login_manager
@@ -31,16 +32,26 @@ def create_app(test_config=None):
 
     # Email configuration
     app.config.update(
-        MAIL_SERVER="smtp.gmail.com",
-        MAIL_PORT=587,
-        MAIL_USE_TLS=True,
-        MAIL_USE_SSL=False,
+        MAIL_SERVER=os.getenv("MAIL_SERVER", "smtp.gmail.com"),
+        MAIL_PORT=int(os.getenv("MAIL_PORT", "587")),
+        MAIL_USE_TLS=os.getenv("MAIL_USE_TLS", "true").lower() == "true",
+        MAIL_USE_SSL=os.getenv("MAIL_USE_SSL", "false").lower() == "true",
         MAIL_USERNAME=os.getenv("MAIL_USERNAME"),
         MAIL_PASSWORD=os.getenv("MAIL_PASSWORD"),
         MAIL_DEFAULT_SENDER=(
             os.getenv("MAIL_DEFAULT_SENDER_NAME", "Maruti Pharmacy"),
-            os.getenv("MAIL_USERNAME")
-        )
+            os.getenv("MAIL_USERNAME"),
+        ),
+    )
+
+    # Redis client
+    # Creating the client does not require Redis to be running.
+    # Cache operations must handle connection failures gracefully.
+    app.extensions["redis_client"] = Redis.from_url(
+        app.config["REDIS_URL"],
+        socket_connect_timeout=0.2,
+        socket_timeout=0.2,
+        decode_responses=True,
     )
 
     # Initialize extensions
